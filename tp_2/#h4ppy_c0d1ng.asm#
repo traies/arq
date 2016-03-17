@@ -1,0 +1,42 @@
+	section .text
+	GLOBAL _start
+
+_start:
+	mov ecx, string
+	mov edx, ecx
+	mov eax, [edx]
+	sub edx, 1
+str_lp:	add edx, 1
+	mov eax, [edx]
+	test al,al
+	jz final
+	call eval_char
+	jmp str_lp
+final:	mov ecx, string		; call write
+	mov edx, str_ln
+	mov ebx, 1
+	mov eax, 4
+	int 80h
+
+	mov eax, 1		; return
+	mov ebx, 0
+	int 80h
+
+eval_char:
+
+	push ebp
+	mov ebp, esp
+	cmp eax, 0x61		; cmp char 'a'
+	jle brake
+	cmp eax, 0x7A		; cmp char 'z'
+	jg  brake
+	sub eax, 0x20		; a to A
+	mov [edx], eax		; load val
+brake:	mov esp, ebp
+	pop ebp
+	ret
+	
+	section .data
+
+	string db "h4ppy c0d1ng", 10 ; string original
+	str_ln equ 13
