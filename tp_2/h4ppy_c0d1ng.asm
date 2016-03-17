@@ -4,15 +4,15 @@
 _start:
 	mov ecx, string
 	mov edx, ecx
-	mov eax, [ecx]
 	sub edx, 1
 str_lp:	add edx, 1
-	mov eax, [edx]
+	mov al, [edx]
 	test al, al
-	jz final
+	jz write
 	call eval_char
 	jmp str_lp
-final:	mov ecx, string		; call write
+write:
+	mov ecx, string		; call write
 	mov edx, str_ln
 	mov ebx, 1
 	mov eax, 4
@@ -26,16 +26,16 @@ eval_char:
 
 	push ebp
 	mov ebp, esp
-	cmp eax, 0x61		; cmp char 'a'
+	cmp al, 0x61		; cmp char 'a'
 	jle brake
-	cmp eax, 0x7A		; cmp char 'z'
+	cmp al, 0x7A		; cmp char 'z'
 	jg  brake
-	sub eax, 0x20		; a to A
-	mov [edx], eax		; load val
+	sub al, 0x20		; a to A
+	mov [edx], al		; load val
 brake:	mov esp, ebp
 	pop ebp
 	ret
-	
+
 	section .data
 
 	string db "h4ppy c0d1ng", 10 ; string original
