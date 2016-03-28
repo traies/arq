@@ -1,28 +1,28 @@
 ; NOTA: hice el ejercicio en 8 bits porque me parecio mas facil.
 ;       tampoco verifico que el numero sea un entero.
 section .text
-GLOBAL _start
+GLOBAL n_to_str
 
-_start:
-    push magic_string
-    push magic_number
-    call n_to_str
+;_start:
+;    push magic_string
+;    push magic_number
+;    call n_to_str
 
-    mov ecx, magic_string		; call write
-  	mov edx, eax            ; str_ln
-  	mov ebx, 1
-  	mov eax, 4
-  	int 80h
+;    mov ecx, magic_string		; call write
+;  	mov edx, eax            ; str_ln
+;  	mov ebx, 1
+;  	mov eax, 4
+;  	int 80h
 
-  	mov eax, 1		    ; return
-  	mov ebx, 0
-  	int 80h
+;  	mov eax, 1		    ; return
+;  	mov ebx, 0
+;  	int 80h
 
 
 n_to_str:
     push ebp
     mov ebp, esp
-    push 0
+    push 10
     mov eax, [ebp+8]
     mov dh, 10
 div_10:
