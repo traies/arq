@@ -2,7 +2,7 @@
 
 section .text
 GLOBAL _start
-extern n_to_str
+extern n_to_str, str_len
 
 _start:
   mov ebp, esp
@@ -30,7 +30,7 @@ print_lp:
   push edx
   mov edx, [ebp+4*ecx + 4]
   push edx
-  call get_str_len
+  call str_len
   pop edx
   mov ecx, edx		        ; call write
   mov edx, eax              ; str_ln
@@ -44,8 +44,6 @@ print_lp:
   mov eax, 4
   int 80h
 
-
-
   pop edx
   pop ecx
   add ecx, 1
@@ -56,27 +54,6 @@ end:
   mov eax, 1		    ; return
   mov ebx, 0
   int 80h
-
-get_str_len:
-  push ebp
-  mov ebp, esp
-  mov eax, [ebp + 8]
-  mov edx, 0
-  mov ebx, 0
-
-count_lp:
-  mov bl, [eax]
-  test bl, bl
-  jz end_str_len
-  add edx, 1
-  add eax, 1
-  jmp count_lp
-
-end_str_len:
-  mov eax, edx
-  mov esp, ebp
-  pop ebp
-  ret
 
 section .data
     new_ln db 10
