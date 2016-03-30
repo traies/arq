@@ -14,7 +14,7 @@ _start:
   call n_to_str
 
   mov ecx, magic_string		; call write
-  mov edx, eax            ; str_ln
+  mov edx, eax              ; str_ln
   mov ebx, 1
   mov eax, 4
   int 80h
@@ -33,10 +33,18 @@ print_lp:
   call get_str_len
   pop edx
   mov ecx, edx		        ; call write
-  mov edx, eax            ; str_ln
+  mov edx, eax              ; str_ln
   mov ebx, 1
   mov eax, 4
   int 80h
+
+  mov ecx, new_ln		    ; new line
+  mov edx, 1
+  mov ebx, 1
+  mov eax, 4
+  int 80h
+
+
 
   pop edx
   pop ecx
@@ -52,7 +60,7 @@ end:
 get_str_len:
   push ebp
   mov ebp, esp
-  mov eax, [ebp]
+  mov eax, [ebp + 8]
   mov edx, 0
   mov ebx, 0
 
@@ -70,5 +78,7 @@ end_str_len:
   pop ebp
   ret
 
+section .data
+    new_ln db 10
 section .bss
     magic_string: resb 20
