@@ -1,0 +1,4 @@
+;siete.asm
+GLOBAL siete
+	section .text
+siete:	
