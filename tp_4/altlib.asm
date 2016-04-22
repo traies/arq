@@ -1,5 +1,5 @@
 ;altlib.asm
-GLOBAL altwrite, altread, altclose, altopen
+GLOBAL altwrite, altread, altclose, altopen, altexit
 
 section .text
 ;void altexit();
@@ -18,9 +18,9 @@ altread:
 
   push ebx
   mov eax, 3
-  mov ebx, [ebp+12]
-  mov ecx, [ebp+16]
-  mov edx, [ebp+20]
+  mov ebx, [ebp+8]
+  mov ecx, [ebp+12]
+  mov edx, [ebp+16]
   int 80h
   pop ebx
 
