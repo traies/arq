@@ -6,19 +6,22 @@ extern int hour();
 extern void set();
 void printint(int val, char ** vptr, char color);
 void printintw(int val, char ** vptr, char color);
+void print_bcd(char num, char ** vptr, char color);
+char convert_bcd(char byte, char bool);
+
 
 void kernel(){
     char * v = vbuff;
     int s;
-    set();
     while(1){
       v = vbuff;
-      printint(hour(), &v, 0x29);
+      //printint(hour(), &v, 0x29);
+      print_bcd(hour(), &v, 0x29);
       println(" hour, ", &v, 0x29);
-      printint(min(), &v, 0x29);
+      print_bcd(min(), &v, 0x29);
       println(" min, ", &v, 0x29);
-      printint(sec(), &v, 0x29);
-      println(" secs, ", &v, 0x29);
+      print_bcd(sec(), &v, 0x29);
+      println(" sec", &v, 0x29);
     }
 }
 
@@ -40,4 +43,20 @@ void printintw(int val, char ** vptr, char color){
     const char c =  val % 10 + '0';
     println(&c, vptr, color);
     return;
+}
+void print_bcd(char num, char ** vptr, char color){
+  char c = convert_bcd(num, 0) + '0';
+  println(&c, vptr, color);
+  c = convert_bcd(num, 1) + '0';
+  println(&c, vptr, color);
+
+}
+char convert_bcd(char byte, char high){
+  if (high){
+    byte = byte & 0x0F;
+  }
+  else{
+    byte = (byte & 0xF0) >> 4;
+  }
+  return byte;
 }
