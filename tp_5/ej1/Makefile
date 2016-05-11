@@ -11,4 +11,4 @@ all:
 	mcopy kernel.bin z:/boot -o
 clean:
 	rm *.o
-	rm arqban.bin
+	rm kernel.bin
