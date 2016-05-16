@@ -40,7 +40,9 @@ void printintw(int val, char ** vptr, char color){
         return;
     }
     printintw(val/10, vptr, color);
-    const char c =  val % 10 + '0';
+    const char c [2];
+    c[0] =  val % 10 + '0';
+    c[1] = 0;
     println(&c, vptr, color);
     return;
 }
