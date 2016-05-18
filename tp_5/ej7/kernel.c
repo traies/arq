@@ -4,7 +4,7 @@
 
 void hello_world_asm();
 
-DESCR_INT idt[0xA];	// IDT de 11 entradas
+DESCR_INT idt[0xFF];	// IDT de 11 entradas
 IDTR idtr;			// IDTR
 
 void setup_IDT_entry (int index, byte selector, dword offset, byte access);
@@ -17,31 +17,25 @@ Punto de entrada de c�digo C.
 int kmain()
 {
 
-	// setup_IDT_entry (0x08, 0x08, (dword)&_irq00Handler, ACS_INT);
-	// setup_IDT_entry (0x09, 0x09, (dword)&_irq01Handler, ACS_INT);
-	setup_IDT_entry (0x80, 0x80, (dword)&_syscall, ACS_INT);
+	setup_IDT_entry (0x08, 0x08, (dword)&_irq00Handler, ACS_INT);
+	setup_IDT_entry (0x09, 0x08, (dword)&_irq01Handler, ACS_INT);
+	setup_IDT_entry (0x80, 0x08, (dword)&_syscall, ACS_INT);
 
 	idtr.base = 0;
 	idtr.base +=(dword) &idt;
 	idtr.limit = sizeof(idt)-1;
 
 	_lidt (&idtr);
-
-
 	//Todas las interrupciones desabilidas.
-	picMasterMask(0x7C);
-	picSlaveMask(0x7C);
-
+	picMasterMask(0xFC);
+	picSlaveMask(0xFF);
 	_sti();
-
-	hello_world_asm();
 	while(1){
-
+		hello_world_asm();
 	}
 
 
 }
-
 void setup_IDT_entry (int index, byte selector, dword offset, byte access) {
   idt[index].selector = selector;
   idt[index].offset_l = offset & 0xFFFF;

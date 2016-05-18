@@ -23,13 +23,17 @@ void irqDispatcher(dword irq){
 	}
 	return;
 }
-
-void syscall_dispatcher(dword eax, dword ebx, dword ecx, dword edx, dword esx, dword edi){
+/*The registers are stored on the stack in the following order: EAX, ECX, EDX,
+EBX, EBP, ESP (original value), EBP, ESI, and EDI (if the current operand-size
+ attribute is 32)
+*/
+void syscall_dispatcher(dword edi, dword esi, dword ebp, dword esp, dword ebx, dword edx, dword ecx, dword eax){
 	switch(eax){
 		case 4:
 			sys_write(ebx, ecx, edx);
 	}
 }
+
 
 /* sys_write */
 void sys_write(int fd, const void * buf, unsigned int count){
@@ -55,19 +59,20 @@ void sys_write_err(const void * buf, unsigned int count){
 /* Time tick */
 void int_08(){
 	char a;
-	// if (pulse) {
-	// 	*vptr = '|';
-	// 	pulse = 0;
-	// }
-	// else {
-	// 	*vptr = ' ';
-	// 	pulse = 1;
-	// }
+	if (pulse) {
+		*vptr = '|';
+		pulse = 0;
+	}
+	else {
+		*vptr = ' ';
+		pulse = 1;
+	}
 }
 
 /* Keyboard */
 void int_09(){
 	/* imprimir en pantalla */
+
 	if (kstatus()) {
 		char c [2];
 		c[0] = get_key(kinput());

@@ -4,18 +4,15 @@ section .text
 
 hello_world_asm:
   push ebp
-  mov ebp, espn
+  mov ebp, esp
   push ebx
-  push ecx
-  push edx
   mov eax, 4
   mov ebx, 1
   mov ecx, hello
   mov edx, str_ln
 marker:
   int 80h
-  pop edx
-  pop ecx
+  
   pop ebx
   leave
   ret

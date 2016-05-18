@@ -129,17 +129,10 @@ int_08_hand:				; Handler de INT 8 ( Timer tick)
     iret
 
 _syscall:
-		push ebp
-		mov ebp, esp
-		push edi
-		push esi
-		push edx
-		push ecx
-		push ebx
-		push eax
+		pushad
 		call syscall_dispatcher
-		leave
-		ret
+		popad
+		iret
 
 haltcpu:
 	cli
